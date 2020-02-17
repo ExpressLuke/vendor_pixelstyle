@@ -72,8 +72,21 @@ PRODUCT_PRODUCT_PROPERTIES += \
     setupwizard.theme=glif_v3_light
 
 # Gestures
-PRODUCT_PROPERTY_OVERRIDES += \
-    ro.boot.vendor.overlay.theme=com.android.internal.systemui.navbar.gestural
+ifeq ($(TARGET_NAVIGATION),gestural)
+    PRODUCT_PROPERTY_OVERRIDES += \
+        ro.boot.vendor.overlay.theme=com.android.internal.systemui.navbar.gestural
+else ifeq ($(TARGET_NAVIGATION),pie)
+    PRODUCT_PROPERTY_OVERRIDES += \
+        ro.boot.vendor.overlay.theme=com.android.internal.systemui.navbar.twobutton
+else ifeq ($(TARGET_NAVIGATION),classic)
+    PRODUCT_PROPERTY_OVERRIDES += \
+        ro.boot.vendor.overlay.theme=com.android.internal.systemui.navbar.threebutton
+else ifeq ($(TARGET_NAVIGATION),)
+    $(warning "PixelStyle: TARGET_NAVIGATION is undefined, defaulting to 3-button navigation")
+    PRODUCT_PROPERTY_OVERRIDES += \
+        ro.boot.vendor.overlay.theme=com.android.internal.systemui.navbar.threebutton
+endif
+
 
 # Sounds
 PRODUCT_PROPERTY_OVERRIDES += \
